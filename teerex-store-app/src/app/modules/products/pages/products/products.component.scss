@@ -1,0 +1,16 @@
+.product-list-section{
+    display: flex;
+    justify-content: space-between;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+    column-gap: 10px;
+    row-gap: 15px;
+}
+
+.product-list__grid{
+
+}

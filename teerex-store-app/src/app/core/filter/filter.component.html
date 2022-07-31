@@ -1,0 +1,10 @@
+<div class="filter">
+    <div class="filter-categories" *ngFor="let filter of filters;">
+        <h3 class="filter-title">{{filter.category}}</h3>
+        <ul class="filter-list">
+            <li *ngFor="let value of filter.filtervalues;let index as index;">
+                <label>{{value}}</label> <input type="checkbox" (change)="onFilterSelect($evennt, index, filter.category)"/>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+app-card::ng-deep .card {
+    padding: 15px;
+}
+
+.product-card-content {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+    align-items: center;
+}
+
+.add-card-button {
+    background-color: #555555;
+    border: none;
+    color: #fff;
+    padding: 10px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.product-card-price {
+    font-weight: bold;
+}

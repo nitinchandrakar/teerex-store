@@ -9,6 +9,9 @@ import { HeaderModule } from './header/header.module';
   imports: [
     CommonModule,
     HeaderModule
+  ],
+  exports:[
+    HeaderModule
   ]
 })
 export class CoreModule { }
