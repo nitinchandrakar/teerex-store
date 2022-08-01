@@ -1,0 +1,28 @@
+<div class="product-cart-items-wrapper">
+  <div class="product-cart-image">
+    <app-aspect-ratio-image
+      [src]="product.imageURL"
+      [alt]="product.name"
+      [aspectRatio]="'1/1'"
+    ></app-aspect-ratio-image>
+  </div>
+  <div class="product-cart-details">
+    <div class="product-name">
+      {{ product.name }}
+    </div>
+    <div class="product-price">Rs {{ product.price * product.cartCount }}</div>
+  </div>
+  <div class="product-cart-buttons">
+    <div class="product-cart-quantity">
+      <app-counter-button
+        (onDecrement)="onDecrement($event)"
+        (onIncrement)="onIncrement($event)"
+        [maxValue]="product.quantity"
+        [value]="product.cartCount"
+      ></app-counter-button>
+    </div>
+    <div class="product-cart-delete-btn">
+      <button (click)="removeFromCart()" class="delete-button">Delete</button>
+    </div>
+  </div>
+</div>

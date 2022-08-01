@@ -14,15 +14,21 @@ export class ServicesService {
   private filterSubject = new BehaviorSubject<any>(null);
   private resetFilterSubject = new Subject();
 
+  private cartSubject = new BehaviorSubject<any>(null);
+
   private searchQuery: string;
   private filterData: Array<Filter> = [];
   private productList: Array<Product>;
   private searchProducts: Array<Product>;
   private selectedFilters: any = {};
 
+  private cartProduct: any = {};
+
   productSubject$: Observable<any> = this.productSubject.asObservable();
   filterSubject$: Observable<any> = this.filterSubject.asObservable();
   resetFilterSubject$: Observable<any> = this.resetFilterSubject.asObservable();
+
+  cartSubject$: Observable<any> = this.cartSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -184,5 +190,31 @@ export class ServicesService {
     });
 
     this.productSubject.next(data);
+  }
+
+  addToCart(product: Product) {
+    if (this.cartProduct[product.id]) {
+      if (this.cartProduct[product.id].cartCount != product.quantity) {
+        this.cartProduct[product.id].cartCount++;
+      }else{
+        console.log('Max quantity exceed ');
+        return;
+      }
+    } else {
+      product.cartCount = 1;
+      this.cartProduct[product.id] = product;
+    }
+
+    this.cartSubject.next(this.cartProduct);
+  }
+
+  removeFromCart(product: Product) {
+    if(this.cartProduct[product.id].cartCount==0){
+      delete this.cartProduct[product.id];
+    }else{
+      this.cartProduct[product.id].cartCount--;
+    }
+   
+    this.cartSubject.next(this.cartProduct);
   }
 }

@@ -1,1 +1,6 @@
-<p>cart works!</p>
+<h2>Shopping Cart</h2>
+<section class="product-cart-list" *ngIf="services.cartSubject$ | async as products">
+    <div class="product-cart-items" *ngFor="let product of products | keyvalue">
+        <app-cart-items [product]="product.value"></app-cart-items>
+    </div>
+</section>

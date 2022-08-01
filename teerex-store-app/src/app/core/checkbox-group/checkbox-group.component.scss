@@ -1,3 +1,11 @@
 .form-checkbox-wrapper{
+    padding-bottom: 5px;
+}
+.form-checkbox-wrapper label {
     cursor: pointer;
+    padding-left: 15px;
+}
+
+h4.form-checkbox-group-title {
+    text-transform: capitalize;
 }

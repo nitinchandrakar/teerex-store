@@ -8,4 +8,5 @@ export interface Product {
   color: string;
   gender: string;
   quantity: number;
+  cartCount?:number;
 }
