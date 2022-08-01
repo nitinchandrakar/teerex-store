@@ -16,7 +16,6 @@ export class ServicesService {
 
   private cartSubject = new BehaviorSubject<any>(null);
 
-  private searchQuery: string;
   private filterData: Array<Filter> = [];
   private productList: Array<Product>;
   private searchProducts: Array<Product>;
@@ -102,7 +101,6 @@ export class ServicesService {
       return;
     }
 
-    this.searchQuery = query;
     const searchData = this.productList.filter((product: Product) => {
       if (product.name.toLowerCase() == query.toLowerCase()) {
         return true;
@@ -216,9 +214,5 @@ export class ServicesService {
     }
    
     this.cartSubject.next(this.cartProduct);
-  }
-
-  filterService(){
-    
   }
 }

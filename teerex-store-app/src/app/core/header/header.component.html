@@ -1,7 +1,9 @@
 <header class="header">
-    <a href="" class="logo">TreeRex Store</a>
-    <ul class="menu">
-      <li><a routerLink="/products">PRODUCTS</a></li>
-      <li><a routerLink="/cart">CART</a></li>
-    </ul>
-  </header>
+  <a href="" class="logo">TreeRex Store</a>
+  <ul class="menu">
+    <li><a routerLink="/products">PRODUCTS</a></li>
+    <li><a routerLink="/cart">CART</a><span class="cart-label" *ngIf="service.cartSubject$ | async as cart">
+      {{getCartCount(cart)}}
+    </span></li>
+  </ul>
+</header>
