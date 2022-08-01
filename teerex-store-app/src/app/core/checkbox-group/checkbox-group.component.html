@@ -1,0 +1,18 @@
+<section>
+  <h4 class="form-checkbox-group-title">{{ groupName }}</h4>
+  <form [formGroup]="form" novalidate class="form-checkbox-group">
+    <div
+      *ngFor="let checkbox of checkboxs; let i = index"
+      class="form-checkbox-wrapper"
+    >
+      <input #checkboxes
+        id="{{ checkbox }}"
+        type="checkbox"
+        formArrayName="selectedCheckBox"
+        [value]="checkbox"
+        (change)="onCheckboxChange($event)"
+      />
+      <label for="{{ checkbox }}">{{ checkbox }}</label>
+    </div>
+  </form>
+</section>

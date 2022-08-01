@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Filter } from '@app/shared/models/filter.model';
 import { Product } from '@app/shared/models/product.model';
 import { environment } from '@src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 @Injectable({
@@ -12,13 +12,17 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 export class ServicesService {
   private productSubject = new BehaviorSubject<any>(null);
   private filterSubject = new BehaviorSubject<any>(null);
+  private resetFilterSubject = new Subject();
 
   private searchQuery: string;
   private filterData: Array<Filter> = [];
   private productList: Array<Product>;
+  private searchProducts: Array<Product>;
+  private selectedFilters: any = {};
 
   productSubject$: Observable<any> = this.productSubject.asObservable();
   filterSubject$: Observable<any> = this.filterSubject.asObservable();
+  resetFilterSubject$: Observable<any> = this.resetFilterSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -29,6 +33,7 @@ export class ServicesService {
         this.productList = data;
         this.getFilters(data);
         this.productSubject.next(data);
+        this.searchProducts = data;
       });
   }
 
@@ -65,12 +70,27 @@ export class ServicesService {
         typeCat.filtervalues.push(filter.type);
     });
 
+    const maxPrice = priceCat.filtervalues.sort((a, b) => b - a)[0];
+
+    let i = 0;
+    const priceRange = [];
+    do {
+      if (maxPrice > i + 150) {
+        priceRange.push(`${i}-${i + 150}`);
+      } else {
+        priceRange.push(maxPrice);
+      }
+      i = i + 150;
+    } while (i < maxPrice);
+
+    priceCat.filtervalues = priceRange;
+
     this.filterData = [colorCat, genderCat, typeCat, priceCat];
     this.filterSubject.next(this.filterData);
   }
 
   getSearchProducts(query: string) {
-    if(!query || query.trim()===""){
+    if (!query || query.trim() === '') {
       this.getFilters(this.productList);
       this.productSubject.next(this.productList);
       return;
@@ -78,34 +98,91 @@ export class ServicesService {
 
     this.searchQuery = query;
     const searchData = this.productList.filter((product: Product) => {
-      
-      if(product.name.toLowerCase()==query.toLowerCase()){
-        return true;
-      }
-      
-      let count=0;
-      const queries = query.split(' ').map(item=>item.toLowerCase());
-
-      if(queries.includes(product.color.toLowerCase())){  
-        count++;
-      }
-
-      if(queries.includes(product.type.toLowerCase())){  
-        count++;
-      }
-
-      if(queries.length===count){
+      if (product.name.toLowerCase() == query.toLowerCase()) {
         return true;
       }
 
-      return false
+      let count = 0;
+      const queries = query.split(' ').map((item) => item.toLowerCase());
 
+      if (queries.includes(product.color.toLowerCase())) {
+        count++;
+      }
+
+      if (queries.includes(product.type.toLowerCase())) {
+        count++;
+      }
+
+      if (queries.length === count) {
+        return true;
+      }
+
+      return false;
     });
+
+    this.searchProducts = searchData;
+    this.resetFilter();
     this.getFilters(searchData);
-    this.productSubject.next(searchData);
+  }
+
+  resetFilter() {
+    this.selectedFilters = {};
+    this.resetFilterSubject.next(true);
+    this.productSubject.next(this.searchProducts);
   }
 
   getFiltteredProducts(filter: any) {
-    
+    console.log(filter);
+
+    this.selectedFilters[filter.category] = filter.selectedValues;
+
+    let prices = [];
+    if (
+      this.selectedFilters['price'] &&
+      this.selectedFilters['price'].length > 0
+    ) {
+      this.selectedFilters['price'].forEach((item) => {
+        prices = prices.concat(...item.split('-'));
+      });
+
+      prices = [
+        prices.sort((a, b) => a - b)[0],
+        prices.sort((a, b) => b - a)[0],
+      ];
+    }
+
+    const data = this.searchProducts.filter((product: Product) => {
+      let flag = true;
+      if (
+        this.selectedFilters['color'] &&
+        this.selectedFilters['color'].length > 0 &&
+        !this.selectedFilters['color'].includes(product.color)
+      ) {
+        flag = false;
+      }
+
+      if (
+        this.selectedFilters['gender'] &&
+        this.selectedFilters['gender'].length > 0 &&
+        !this.selectedFilters['gender'].includes(product.gender)
+      ) {
+        flag = false;
+      }
+
+      if (
+        this.selectedFilters['type'] &&
+        this.selectedFilters['type'].length > 0 &&
+        !this.selectedFilters['type'].includes(product.type)
+      ) {
+        flag = false;
+      }
+
+      if (prices.length > 0) {
+        flag = product.price >= prices[0] && product.price <= prices[1];
+      }
+      return flag;
+    });
+
+    this.productSubject.next(data);
   }
 }
