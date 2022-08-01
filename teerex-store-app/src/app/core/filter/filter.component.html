@@ -1,7 +1,4 @@
 <div class="filter">
-    <div>
-        <button (click)="resetFilters()">Reset</button>
-    </div>
     <div class="filter-categories" *ngFor="let filter of filters;">
         <app-checkbox-group (onChangeHandler)="handleFilter($event)" [groupName]="filter.category" [checkboxs]="filter.filtervalues" ></app-checkbox-group>
     </div>

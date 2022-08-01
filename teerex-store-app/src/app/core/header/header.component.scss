@@ -54,3 +54,10 @@ a {
 .header .menu-icon {
   display: none;
 }
+
+@media screen and (max-width: 767px) {
+  .header .logo {
+    font-size: 1.3em;
+    padding: 18px 20px;
+  }
+}

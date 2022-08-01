@@ -3,4 +3,34 @@
     display: flex;
     margin: auto;
     justify-content: center;
+    align-items: center;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid #acabab;
+}
+
+.search-input-container {
+    width: 100%;
+}
+
+.search-submit-container {
+    padding-left: 15px;
+    button {
+        background-color: #555555;
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
 }

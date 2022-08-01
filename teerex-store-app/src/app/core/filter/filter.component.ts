@@ -13,6 +13,9 @@ export class FilterComponent implements OnInit {
   @Input()
   filters:Array<Filter>
 
+  @Input()
+  isHide:boolean=true;
+
   constructor(
     private services:ServicesService
   ) { }

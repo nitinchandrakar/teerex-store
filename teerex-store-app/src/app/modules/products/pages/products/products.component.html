@@ -1,9 +1,12 @@
 <div class="product-page-wrapper">
     <section class="search">
         <app-search></app-search>
+        <div class="mobile-filter">
+            <button class="filter-button" (click)="isHide=!isHide">Filter</button>
+        </div>
     </section>
     <section class="product-list-section">
-        <aside class="product-filter">
+        <aside class="product-filter" [class.isHide]="isHide">
             <app-card *ngIf="services.filterSubject$ | async as filters">
                 <app-filter [filters]="filters"></app-filter>
             </app-card>

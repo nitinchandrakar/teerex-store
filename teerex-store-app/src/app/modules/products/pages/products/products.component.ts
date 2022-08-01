@@ -9,11 +9,11 @@ import { Observable } from 'rxjs/internal/Observable';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+  isHide:boolean = true;
+
   constructor(public services: ServicesService) {}
 
   ngOnInit(): void {
     this.services.getAllProducts();
-    // this.services.getSearchProducts('text');
-    // this.services.getFiltteredProducts('text');
   }
 }
